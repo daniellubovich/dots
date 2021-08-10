@@ -221,3 +221,18 @@ bar {
 		inactive_workspace $primary $tertiary $font-primary
 	}
 }
+
+for_window [class=.*] border pixel 0
+
+set $mode_gaps gaps
+bindsym $mod+Shift+g mode "$mode_gaps"
+
+mode "$mode_gaps" {
+        bindsym minus      gaps outer all minus 5
+        bindsym plus       gaps outer all plus 5
+        bindsym Shift+minus      gaps inner all minus 5
+        bindsym Shift+plus       gaps inner all plus 5
+	bindsym Shift+0          gaps inner all set 0
+        bindsym Escape mode "default"
+}
+
