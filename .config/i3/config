@@ -186,7 +186,7 @@ exec_always --no-startup-id ~/.config/polybar/launch.sh &
 exec_always --no-startup-id autorandr --change work && feh --bg-scale /home/daniel/Pictures/Wallpapers/bg1.jpg
 exec_always --no-startup-id eval `ssh-agent`
 exec_always --no-startup-id ssh-add ~/.ssh/gitlab_rsa
-
+exec_always --no-startup-id picom
 
 # Custom Keybindings
 bindsym $mod+Shift+m exec spotify
@@ -222,17 +222,21 @@ bar {
 	}
 }
 
+# Gaps
 for_window [class=.*] border pixel 0
+gaps inner 15
+bindsym $mod+Shift+minus gaps inner all minus 5
+bindsym $mod+Shift+plus gaps inner all plus 5
 
-set $mode_gaps gaps
-bindsym $mod+Shift+g mode "$mode_gaps"
-
-mode "$mode_gaps" {
-        bindsym minus      gaps outer all minus 5
-        bindsym plus       gaps outer all plus 5
-        bindsym Shift+minus      gaps inner all minus 5
-        bindsym Shift+plus       gaps inner all plus 5
-	bindsym Shift+0          gaps inner all set 0
-        bindsym Escape mode "default"
-}
+# Gap mode - useful, but maybe overkill
+#set $mode_gaps gaps
+#bindsym $mod+Shift+g mode "$mode_gaps"
+#mode "$mode_gaps" {
+#        bindsym minus      gaps outer all minus 5
+#        bindsym plus       gaps outer all plus 5
+#        bindsym Shift+minus      gaps inner all minus 5
+#        bindsym Shift+plus       gaps inner all plus 5
+#        bindsym Shift+0          gaps inner all set 0
+#        bindsym Escape mode "default"
+#}
 
