@@ -93,12 +93,11 @@ bindsym $mod+space focus mode_toggle
 # focus the parent container
 bindsym $mod+a focus parent
 
-# focus the child container
-#bindsym $mod+d focus child
-#
+# Workspaces
 set $workspace1 "1: Chrome"
 set $workspace2 "2: VS Code"
 set $workspace3 "3: Term"
+set $workspace4 "4: Zoom"
 set $workspace9 "9: Whatever"
 set $workspace10 "10: Music"
 
@@ -106,7 +105,7 @@ set $workspace10 "10: Music"
 bindsym $mod+1 workspace $workspace1
 bindsym $mod+2 workspace $workspace2
 bindsym $mod+3 workspace $workspace3
-bindsym $mod+4 workspace 4
+bindsym $mod+4 workspace $workspace4
 bindsym $mod+5 workspace 5
 bindsym $mod+6 workspace 6
 bindsym $mod+7 workspace 7
@@ -118,7 +117,7 @@ bindsym $mod+0 workspace $workspace10
 bindsym $mod+Shift+1 move container to workspace $workspace1
 bindsym $mod+Shift+2 move container to workspace $workspace2
 bindsym $mod+Shift+3 move container to workspace $workspace3
-bindsym $mod+Shift+4 move container to workspace 4
+bindsym $mod+Shift+4 move container to workspace $workspace4
 bindsym $mod+Shift+5 move container to workspace 5
 bindsym $mod+Shift+6 move container to workspace 6
 bindsym $mod+Shift+7 move container to workspace 7
@@ -126,20 +125,23 @@ bindsym $mod+Shift+8 move container to workspace 8
 bindsym $mod+Shift+9 move container to workspace $workspace9
 bindsym $mod+Shift+0 move container to workspace $workspace10
 
+# Automatic workspace assignment by program
 assign [class="Brave-browser"] $workspace1
 assign [class="Spotify"] $workspace10
 assign [class="Code"] $workspace2
+assign [class="zoom"] $workspace4
 for_window [class="Spotify"] move to workspace $workspace10
+
+# Title bar config
 for_window [class=".*"] title_format "<span size='x-small'> %title</span>"
 title_align center
 
 # Borders
 hide_edge_borders both
 
-# reload the configuration file
-#bindsym $mod+Shift+c reload
 # restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
 bindsym $mod+Shift+r restart
+
 # exit i3 (logs you out of your X session)
 bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -b 'Yes, exit i3' 'i3-msg exit'"
 
@@ -169,12 +171,13 @@ mode "resize" {
 
 bindsym $mod+r mode "resize"
 
-
+# Monitor 1
 workspace $workspace2 output $monitor1
 workspace $workspace3 output $monitor1
 workspace 4 output $monitor1
 workspace 5 output $monitor1
 
+# Monitor 2
 workspace $workspace1 output $monitor2
 workspace 6 output $monitor2
 workspace 7 output $monitor2
@@ -182,17 +185,17 @@ workspace 8 output $monitor2
 workspace $workspace9 output $monitor2
 workspace $workspace10 output $monitor2
 
+# Startup
 exec_always --no-startup-id ~/.config/polybar/launch.sh &
-exec_always --no-startup-id autorandr --change work && feh --bg-scale /home/daniel/Pictures/Wallpapers/bg1.jpg
+exec_always --no-startup-id autorandr --change work && feh --bg-scale /home/daniel/Pictures/Wallpapers/bg1.jpg && picom --experimental-backends --backend glx
 exec_always --no-startup-id eval `ssh-agent`
 exec_always --no-startup-id ssh-add ~/.ssh/gitlab_rsa
-exec_always --no-startup-id picom
 
 # Custom Keybindings
 bindsym $mod+Shift+m exec spotify
 bindsym $mod+Shift+b exec brave-browser
 bindsym $mod+Shift+c exec code
-
+bindsym $mod+shift+x exec betterlockscreen -l blur
 
 # Colors
 set $primary #ffe5d9
@@ -200,14 +203,14 @@ set $secondary #d8e2dc
 set $tertiary #ffcad4
 set $font-primary #9d8189
 set $font-secondary #f4acb7
+set $font-tertiary #5c474e
 
-# class                 border  backgr. text    indicator child_border
-client.focused          #4c7899 #ffcad4 #9d8189 #2e9ef4   #285577
-client.focused_inactive #333333 #ffcad4 #9d8189 #484e50   #5f676a
-client.unfocused        #333333 #d8e2dc #9d8189 #292d2e   #222222
-client.urgent           #2f343a #900000 #ffffff #900000   #900000
-client.placeholder      #000000 #0c0c0c #ffffff #000000   #0c0c0c
-
+# class                 border  backgr.  text           indicator child_border
+client.focused          #333333 $primary $font-tertiary #2e9ef4   #285577
+client.focused_inactive #333333 $primary $font-tertiary #2e9ef4   #285577
+client.unfocused        #333333 $primary $font-tertiary #2e9ef4   #285577
+client.urgent           #333333 #900000  #ffffff       #900000   #900000
+client.placeholder      #333333 $primary $font-tertiary #2e9ef4   #285577
 client.background       #ffffff
 
 
@@ -215,9 +218,9 @@ client.background       #ffffff
 # finds out, if available)
 bar {
 	colors {
-		background $primary
-		focused_workspace $primary $secondary $font-primary
-		active_workspace $primary $secondary $font-primary
+		background         $primary
+		focused_workspace  $primary $secondary $font-primary
+		active_workspace   $primary $secondary $font-primary
 		inactive_workspace $primary $tertiary $font-primary
 	}
 }
@@ -240,3 +243,10 @@ bindsym $mod+Shift+plus gaps inner all plus 5
 #        bindsym Escape mode "default"
 #}
 
+# Volume control
+set $volumepath ~/programs/i3-volume
+set $statuscmd i3status
+set $statussig SIGUSR1
+set $volumestep 5
+bindsym $mod+Shift+Prior exec --no-startup-id pactl set-sink-volume 1 +5% #decrease sound volume
+bindsym $mod+Shift+Next exec --no-startup-id pactl set-sink-volume 1 -5% #decrease sound volume
