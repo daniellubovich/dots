@@ -59,10 +59,10 @@ bindsym $mod+Up focus up
 bindsym $mod+Right focus right
 
 # move focused window
-bindsym $mod+Shift+j move left
-bindsym $mod+Shift+k move down
-bindsym $mod+Shift+l move up
-bindsym $mod+Shift+semicolon move right
+bindsym $mod+Shift+h move left
+bindsym $mod+Shift+j move down
+bindsym $mod+Shift+k move up
+bindsym $mod+Shift+l move right
 
 # alternatively, you can use the cursor keys:
 bindsym $mod+Shift+Left move left
@@ -94,11 +94,15 @@ bindsym $mod+space focus mode_toggle
 bindsym $mod+a focus parent
 
 # Workspaces
-set $workspace1 "1: Chrome"
-set $workspace2 "2: VS Code"
-set $workspace3 "3: Term"
-set $workspace4 "4: Zoom"
-set $workspace9 "9: Whatever"
+set $workspace1 "1: VS Code"
+set $workspace2 "2: Term"
+set $workspace3 "3: Zoom"
+set $workspace4 "4"
+set $workspace5 "5"
+set $workspace6 "6: Chrome"
+set $workspace7 "7"
+set $workspace8 "8"
+set $workspace9 "9"
 set $workspace10 "10: Music"
 
 # switch to workspace
@@ -106,10 +110,10 @@ bindsym $mod+1 workspace $workspace1
 bindsym $mod+2 workspace $workspace2
 bindsym $mod+3 workspace $workspace3
 bindsym $mod+4 workspace $workspace4
-bindsym $mod+5 workspace 5
-bindsym $mod+6 workspace 6
-bindsym $mod+7 workspace 7
-bindsym $mod+8 workspace 8
+bindsym $mod+5 workspace $workspace5
+bindsym $mod+6 workspace $workspace6
+bindsym $mod+7 workspace $workspace7
+bindsym $mod+8 workspace $workspace8
 bindsym $mod+9 workspace $workspace9
 bindsym $mod+0 workspace $workspace10
 
@@ -118,18 +122,18 @@ bindsym $mod+Shift+1 move container to workspace $workspace1
 bindsym $mod+Shift+2 move container to workspace $workspace2
 bindsym $mod+Shift+3 move container to workspace $workspace3
 bindsym $mod+Shift+4 move container to workspace $workspace4
-bindsym $mod+Shift+5 move container to workspace 5
-bindsym $mod+Shift+6 move container to workspace 6
-bindsym $mod+Shift+7 move container to workspace 7
-bindsym $mod+Shift+8 move container to workspace 8
+bindsym $mod+Shift+5 move container to workspace $workspace5
+bindsym $mod+Shift+6 move container to workspace $workspace6
+bindsym $mod+Shift+7 move container to workspace $workspace7
+bindsym $mod+Shift+8 move container to workspace $workspace8
 bindsym $mod+Shift+9 move container to workspace $workspace9
 bindsym $mod+Shift+0 move container to workspace $workspace10
 
 # Automatic workspace assignment by program
-assign [class="Brave-browser"] $workspace1
+assign [class="Brave-browser"] $workspace6
 assign [class="Spotify"] $workspace10
-assign [class="Code"] $workspace2
-assign [class="zoom"] $workspace4
+assign [class="Code"] $workspace1
+assign [class="zoom"] $workspace3
 for_window [class="Spotify"] move to workspace $workspace10
 for_window [title="python-scratchpad"] floating enable;
 for_window [title="python-scratchpad"] move scratchpad;
@@ -138,7 +142,7 @@ for_window [title="terminal-scratchpad"] floating enable;
 for_window [title="terminal-scratchpad"] move scratchpad;
 for_window [title="terminal-scratchpad"] border pixel 5;
 
-# Title bar config
+# Title bar config (not used for i3-gaps)
 for_window [class=".*"] title_format "<span size='x-small'> %title</span>"
 title_align center
 
@@ -178,16 +182,16 @@ mode "resize" {
 bindsym $mod+r mode "resize"
 
 # Monitor 1
+workspace $workspace1 output $monitor1
 workspace $workspace2 output $monitor1
 workspace $workspace3 output $monitor1
-workspace 4 output $monitor1
-workspace 5 output $monitor1
+workspace $workspace4 output $monitor1
+workspace $workspace5 output $monitor1
 
 # Monitor 2
-workspace $workspace1 output $monitor2
-workspace 6 output $monitor2
-workspace 7 output $monitor2
-workspace 8 output $monitor2
+workspace $workspace6 output $monitor2
+workspace $workspace7 output $monitor2
+workspace $workspace8 output $monitor2
 workspace $workspace9 output $monitor2
 workspace $workspace10 output $monitor2
 
@@ -248,6 +252,7 @@ bindsym $mod+Shift+plus gaps inner all plus 5
 # Volume control
 bindsym $mod+Shift+Prior exec --no-startup-id pactl set-sink-volume 1 +5% # increase sound volume
 bindsym $mod+Shift+Next exec --no-startup-id pactl set-sink-volume 1 -5% # decrease sound volume
+bindsym $mod+Shift+Pause exec --no-startup-id playerctl play-pause # pause 
 
 # Startup
 exec_always --no-startup-id ~/.config/polybar/launch.sh &
@@ -256,3 +261,6 @@ exec_always --no-startup-id eval `ssh-agent`
 exec_always --no-startup-id ssh-add ~/.ssh/gitlab_rsa
 exec_always --no-startup-id gnome-terminal -t python-scratchpad -x python3
 exec_always --no-startup-id gnome-terminal -t terminal-scratchpad
+exec_always --no-startup-id i3-msg workspace $workspace6
+exec_always --no-startup-id i3-msg workspace $workspace1
+exec_always --no-startup-id nm-applet
