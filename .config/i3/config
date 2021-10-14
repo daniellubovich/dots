@@ -91,7 +91,7 @@ bindsym $mod+Shift+space floating toggle
 bindsym $mod+space focus mode_toggle
 
 # focus the parent container
-bindsym $mod+a focus parent
+# bindsym $mod+a focus parent
 
 # Workspaces
 set $workspace1 "1: VS Code"
@@ -102,7 +102,7 @@ set $workspace5 "5"
 set $workspace6 "6: Chrome"
 set $workspace7 "7"
 set $workspace8 "8"
-set $workspace9 "9"
+set $workspace9 "9: Discord"
 set $workspace10 "10: Music"
 
 # switch to workspace
@@ -135,12 +135,9 @@ assign [class="Spotify"] $workspace10
 assign [class="Code"] $workspace1
 assign [class="zoom"] $workspace3
 for_window [class="Spotify"] move to workspace $workspace10
-for_window [title="python-scratchpad"] floating enable;
-for_window [title="python-scratchpad"] move scratchpad;
-for_window [title="python-scratchpad"] border pixel 5;
-for_window [title="terminal-scratchpad"] floating enable;
-for_window [title="terminal-scratchpad"] move scratchpad;
-for_window [title="terminal-scratchpad"] border pixel 5;
+for_window [class="Authy Desktop"] floating enable;
+for_window [class="Authy Desktop"] move scratchpad;
+for_window [class="Authy Desktop"] border pixel 5;
 
 # Title bar config (not used for i3-gaps)
 for_window [class=".*"] title_format "<span size='x-small'> %title</span>"
@@ -198,10 +195,11 @@ workspace $workspace10 output $monitor2
 # Custom Keybindings
 bindsym $mod+Shift+m exec spotify
 bindsym $mod+Shift+b exec brave-browser
+bindsym $mod+b workspace $workspace6
+bindsym $mod+c workspace $workspace1
 bindsym $mod+Shift+c exec code
 bindsym $mod+shift+x exec betterlockscreen -l blur
-bindsym $mod+p [title="python-scratchpad"] scratchpad show
-bindsym $mod+u [title="terminal-scratchpad"] scratchpad show
+bindsym $mod+a [class="Authy Desktop"] scratchpad show
 
 # Colors
 set $primary #ffe5d9
@@ -256,11 +254,18 @@ bindsym $mod+Shift+Pause exec --no-startup-id playerctl play-pause # pause
 
 # Startup
 exec_always --no-startup-id ~/.config/polybar/launch.sh &
-exec_always --no-startup-id autorandr --change work && feh --bg-scale /home/daniel/Pictures/Wallpapers/bg1.jpg && picom --experimental-backends --backend glx
 exec_always --no-startup-id eval `ssh-agent`
 exec_always --no-startup-id ssh-add ~/.ssh/gitlab_rsa
-exec_always --no-startup-id gnome-terminal -t python-scratchpad -x python3
-exec_always --no-startup-id gnome-terminal -t terminal-scratchpad
+exec_always --no-startup-id authy
+exec_always --no-startup-id nm-applet
+
+# Start by opening workspace 1 and 6
 exec_always --no-startup-id i3-msg workspace $workspace6
 exec_always --no-startup-id i3-msg workspace $workspace1
-exec_always --no-startup-id nm-applet
+
+# Don't turn off screen for an hour
+exec_always --no-startup-id xset s 3600
+exec_always --no-startup-id xset dpms 0 0 3600
+
+# Run display stuff
+exec_always --no-startup-id autorandr --change work && feh --bg-scale /home/daniel/Pictures/Wallpapers/bg1.jpg && picom --experimental-backends --backend glx
