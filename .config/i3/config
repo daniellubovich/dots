@@ -12,8 +12,11 @@
 
 set $mod Mod1
 
-set $monitor2 DisplayPort-2
-set $monitor1 HDMI-A-0
+set $monitor2 DP-2
+set $monitor1 DP-1
+
+set $browser firefox
+set $browserClass Firefox
 
 # Font for window titles. Will also be used by the bar unless a different font
 # is used in the bar {} block below.
@@ -47,10 +50,10 @@ bindsym $mod+d exec dmenu_run
 # bindsym $mod+d exec --no-startup-id i3-dmenu-desktop
 
 # change focus
-bindsym $mod+j focus left
-bindsym $mod+k focus down
-bindsym $mod+l focus up
-bindsym $mod+semicolon focus right
+bindsym $mod+h focus left
+bindsym $mod+j focus down
+bindsym $mod+k focus up
+bindsym $mod+l focus right
 
 # alternatively, you can use the cursor keys:
 bindsym $mod+Left focus left
@@ -71,10 +74,11 @@ bindsym $mod+Shift+Up move up
 bindsym $mod+Shift+Right move right
 
 # split in horizontal orientation
-bindsym $mod+h split h
+#bindsym $mod+h split h
 
 # split in vertical orientation
 bindsym $mod+v split v
+bindsym $mod+Shift+v split h
 
 # enter fullscreen mode for the focused container
 bindsym $mod+f fullscreen toggle
@@ -102,7 +106,7 @@ set $workspace5 "5"
 set $workspace6 "6: Chrome"
 set $workspace7 "7"
 set $workspace8 "8"
-set $workspace9 "9: Discord"
+set $workspace9 "9"
 set $workspace10 "10: Music"
 
 # switch to workspace
@@ -130,14 +134,26 @@ bindsym $mod+Shift+9 move container to workspace $workspace9
 bindsym $mod+Shift+0 move container to workspace $workspace10
 
 # Automatic workspace assignment by program
-assign [class="Brave-browser"] $workspace6
+assign [class=$browserClass] $workspace6
+assign [class="Google-chrome"] $workspace6
 assign [class="Spotify"] $workspace10
 assign [class="Code"] $workspace1
-assign [class="zoom"] $workspace3
+assign [class="zoom "] $workspace3
 for_window [class="Spotify"] move to workspace $workspace10
 for_window [class="Authy Desktop"] floating enable;
 for_window [class="Authy Desktop"] move scratchpad;
 for_window [class="Authy Desktop"] border pixel 5;
+for_window [title="Shutter$"] floating enable;
+for_window [title="Shutter$"] move scratchpad;
+for_window [title="Shutter$"] border pixel 5;
+for_window [class="discord"] floating enable;
+for_window [class="discord"] move scratchpad;
+for_window [class="discord"] border pixel 5;
+
+#for_window [class="zoom "] layout tabbed
+#for_window [class="zoom "] floating enable
+#for_window [title="Zoom - Free Account"] floating disable; move to workspace $workspace3
+#for_window [title="Zoom Meeting"] floating disable; move to workspace $workspace3; focus
 
 # Title bar config (not used for i3-gaps)
 for_window [class=".*"] title_format "<span size='x-small'> %title</span>"
@@ -194,40 +210,39 @@ workspace $workspace10 output $monitor2
 
 # Custom Keybindings
 bindsym $mod+Shift+m exec spotify
-bindsym $mod+Shift+b exec brave-browser
+bindsym $mod+Shift+b exec $browser
 bindsym $mod+b workspace $workspace6
 bindsym $mod+c workspace $workspace1
 bindsym $mod+Shift+c exec code
-bindsym $mod+shift+x exec betterlockscreen -l blur
+bindsym $mod+Shift+x exec betterlockscreen -l blur
 bindsym $mod+a [class="Authy Desktop"] scratchpad show
+bindsym $mod+u [class="Shutter"] scratchpad show
+bindsym $mod+p [class="discord"] fullscreen enable,scratchpad show
 
-# Colors
-set $primary #ffe5d9
-set $secondary #d8e2dc
-set $tertiary #ffcad4
-set $font-primary #9d8189
-set $font-secondary #f4acb7
-set $font-tertiary #5c474e
+#PYWAL ENABLED THEME
+set_from_resource $fg i3wm.color0 #f0f0f0
+set_from_resource $bg i3wm.color2 #f0f0f0
 
-# class                 border  backgr.  text           indicator child_border
-client.focused          #333333 $primary $font-tertiary #2e9ef4   #285577
-client.focused_inactive #333333 $primary $font-tertiary #2e9ef4   #285577
-client.unfocused        #333333 $primary $font-tertiary #2e9ef4   #285577
-client.urgent           #333333 #900000  #ffffff       #900000   #900000
-client.placeholder      #333333 $primary $font-tertiary #2e9ef4   #285577
-client.background       #ffffff
-
+# class                 border  backgr. text indicator child_border
+client.focused          $fg     $fg     $bg  $fg       $fg
+client.focused_inactive $bg     $bg     $fg  $bg       $bg
+client.unfocused        $bg     $bg     $fg  $bg       $bg
+client.urgent           $bg     $bg     $fg  $bg       $bg
+client.placeholder      $bg     $bg     $fg  $bg       $bg
+client.background       $bg
 
 # Start i3bar to display a workspace bar (plus the system information i3status
 # finds out, if available)
 bar {
-	colors {
-		background         $primary
-		focused_workspace  $primary $secondary $font-primary
-		active_workspace   $primary $secondary $font-primary
-		inactive_workspace $primary $tertiary $font-primary
-	}
+		colors {
+				background	 		$bg
+				focused_workspace   $fg $fg $bg
+				active_workspace    $bg $bg $fg
+				inactive_workspace  $bg $bg $fg
+		}
 }
+
+
 
 # Gaps
 for_window [class=.*] border pixel 0
@@ -248,8 +263,8 @@ bindsym $mod+Shift+plus gaps inner all plus 5
 #}
 
 # Volume control
-bindsym $mod+Shift+Prior exec --no-startup-id pactl set-sink-volume 1 +5% # increase sound volume
-bindsym $mod+Shift+Next exec --no-startup-id pactl set-sink-volume 1 -5% # decrease sound volume
+bindsym $mod+Shift+Prior exec --no-startup-id pactl set-sink-volume bluez_sink.AC_12_2F_E6_14_71.a2dp_sink +5% # increase sound volume
+bindsym $mod+Shift+Next exec --no-startup-id pactl set-sink-volume bluez_sink.AC_12_2F_E6_14_71.a2dp_sink  -5% # decrease sound volume
 bindsym $mod+Shift+Pause exec --no-startup-id playerctl play-pause # pause 
 
 # Startup
@@ -257,6 +272,8 @@ exec_always --no-startup-id ~/.config/polybar/launch.sh &
 exec_always --no-startup-id eval `ssh-agent`
 exec_always --no-startup-id ssh-add ~/.ssh/gitlab_rsa
 exec_always --no-startup-id authy
+exec_always --no-startup-id shutter
+exec_always --no-startup-id discord
 exec_always --no-startup-id nm-applet
 
 # Start by opening workspace 1 and 6
@@ -268,4 +285,6 @@ exec_always --no-startup-id xset s 3600
 exec_always --no-startup-id xset dpms 0 0 3600
 
 # Run display stuff
-exec_always --no-startup-id autorandr --change work && feh --bg-scale /home/daniel/Pictures/Wallpapers/bg1.jpg && picom --experimental-backends --backend glx
+exec_always --no-startup-id autorandr --change work && feh --bg-scale /home/daniel/Pictures/Wallpapers/windwaker.png && picom --experimental-backends --backend glx
+
+
