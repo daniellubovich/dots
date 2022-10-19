@@ -2,8 +2,8 @@
 
 cp -avr ~/.config/polybar/* ./.config/polybar/
 cp -avr ~/.config/i3/* ./.config/i3/
-cp ~/.config/compton.conf ./.config/compton.conf
-cp ~/.vimrc ./.vimrc
-cp ~/.Xresources ./.Xresources
-cp ~/.xinitrc ./.xinitrc
-cp -avr ~/.colors/* ./.colors
+cp -avr ~/.colors/* ./.colors/
+cp -av ~/.config/compton.conf ./.config/compton.conf
+cp -av ~/.vimrc ./.vimrc
+cp -av ~/.Xresources ./.Xresources
+cp -av ~/.xinitrc ./.xinitrc
