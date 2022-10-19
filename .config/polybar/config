@@ -17,15 +17,13 @@
 ;==========================================================
 
 [colors]
-#background = #3d3d55
-#foreground = #d8eef2
-background = #6fdcf2
-foreground = #3e3d55
-background-alt = #ffcad4
-foreground-alt = #ffe5d9
-primary = #ffe5d9
-secondary = #d8e2dc
-alert = #ffcad4
+foreground = ${xrdb:foreground:#1d2021}
+background = ${xrdb:background:#cc241d}
+background-alt = ${xrdb:color1:#cc241d}
+foreground-alt = ${xrdb:color2:#cc241d}
+primary = ${xrdb:color3:#cc241d}
+secondary = ${xrdb:color4:#cc241d}
+alert = ${xrdb:color5:#cc241d}
 
 [bar/main]
 monitor = ${env:MONITOR:}
@@ -48,7 +46,7 @@ padding-right = 1
 module-margin-left = 1
 module-margin-right = 1
 
-font-0 = azukifontB:pixelsize=14;3
+font-0 = Hasklug Nerd Font,Hasklig Black:style=Regular:pixelsize=14;3
 font-1 = unifont:fontformat=truetype:size=8:antialias=false;2
 font-2 = siji:pixelsize=10;1
 

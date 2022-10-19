@@ -39,3 +39,5 @@ set wildignore=*.docx,*.jpg,*.png,*.gif,*.pdf,*.pyc,*.exe,*.flv,*.img,*.xlsx
 
 set undofile " Maintain undo history between sessions
 set undodir=~/.vim/undodir
+
+command -range Clip :silent <line1>,<line2> :w !xclip -i -sel c

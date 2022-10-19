@@ -1,0 +1,34 @@
+#include "/home/daniel/.colors/fall"
+
+*.foreground:  FOREGROUND
+*.background:  BACKGROUND
+*.border:      COLOR0
+*.cursorColor: FOREGROUND
+*.color0:      COLOR0
+*.color1:      COLOR1
+*.color2:      COLOR2
+*.color3:      COLOR3
+*.color4:      COLOR4
+*.color5:      COLOR5
+*.color6:      COLOR6
+*.color7:      COLOR7
+*.color8:      COLOR8
+*.color9:      COLOR9
+*.color10:      COLOR10
+*.color11:      COLOR11
+*.color12:      COLOR12
+*.color13:      COLOR13
+*.color14:      COLOR14
+*.color15:      COLOR15
+
+xrdb.color0:      COLOR0
+xrdb.color1:      COLOR1
+xrdb.color2:      COLOR2
+xrdb.color3:      COLOR3
+
+Xcursor.size: 14
+URxvt.font:xft:Victor Mono:size=12
+URxvt.keysym.Shift-Control-V: eval:paste_clipboard
+URxvt.keysym.Shift-Control-C: eval:selection_to_clipboard
+URxvt.iso14755: false
+URxvt.iso14755_52: false
